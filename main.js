@@ -67,53 +67,28 @@ const floor = new THREE.Mesh( floorGeometry, floorMaterial );
 floor.rotation.x = -Math.PI / 2;
 scene.add( floor );
 
-// Mii renderer (made with ariankordi's mii renderer)
+// Mii renderer (Using ariankordi's mii renderer)
 const gltfLoader = new GLTFLoader();
-function loadMiiHead(miiDataHex) {
-  const callbackName = 'onMiiData_' + Math.floor(Math.random() * 1000000);
-  window[callbackName] = function(data) {
-    document.head.removeChild(script);
-    delete window[callbackName];
-    let base64String = data.content;
-    if (base64String.includes(',')) {
-      base64String = base64String.split(',')[1];
-    }
-    base64String = base64String.replace(/\s/g, '');
-    try {
-      const binaryString = atob(base64String);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      const blob = new Blob([bytes.buffer], { type: 'model/gltf-binary' });
-      const blobUrl = URL.createObjectURL(blob);
-      gltfLoader.load(
-        blobUrl,
-        (gltf) => {
-          const miiHead = gltf.scene;
-          miiHead.scale.set(0.8, 0.8, 0.8);
-          miiHead.position.set(0, 1.1, 0); 
-          miiHead.rotation.y = Math.PI;
-          player.add(miiHead);
-          URL.revokeObjectURL(blobUrl);
-        },
-        undefined,
-        (error) => {
-          console.error(":( Error parsing GLTF:", error);
-        }
-      );
-    } catch (err) {
-      console.error(":( error while decoding Base64:", err);
-    }
-  };
-  const targetUrl = `https://mii-unsecure.ariankordi.net/mii.glb?data=${encodeURIComponent(miiDataHex)}`;
-  const jsonpUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}&callback=${callbackName}`;
-  const script = document.createElement('script');
-  script.src = jsonpUrl;
-  script.onerror = () => {
-    console.error(":( Error loading Mii script");
-  };
-  document.head.appendChild(script);
+async function loadMiiHead(miiDataHex) {
+  const miiUrl = `https://mii-unsecure.ariankordi.net/mii.glb?data=${encodeURIComponent(miiDataHex)}`;
+  try {
+    const response = await fetch(miiUrl);
+    if (!response.ok) throw new Error("Error during Mii loading");
+    const arrayBuffer = await response.arrayBuffer();
+    const blob = new Blob([arrayBuffer], { type: 'model/gltf-binary' });
+    const blobUrl = URL.createObjectURL(blob);
+    gltfLoader.load(
+      blobUrl,
+      (gltf) => {
+        const miiHead = gltf.scene;
+        miiHead.scale.set(0.8, 0.8, 0.8);
+        miiHead.position.set(0, 1.1, 0); 
+        miiHead.rotation.y = Math.PI;
+        
+        player.add(miiHead);
+        URL.revokeObjectURL(blobUrl);
+      };
+    );
 }
 const rawMiiData = "0800400308040402020c0301050500010a0000000006000803000a01003c4004000214031303080d04000a030109";
 loadMiiHead(rawMiiData);
