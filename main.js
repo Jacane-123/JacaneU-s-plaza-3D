@@ -84,14 +84,21 @@ async function loadMiiHead(miiDataHex) {
         miiHead.scale.set(0.8, 0.8, 0.8);
         miiHead.position.set(0, 1.1, 0); 
         miiHead.rotation.y = Math.PI;
-        
         player.add(miiHead);
         URL.revokeObjectURL(blobUrl);
-      };
+      },
+      undefined,
+      (error) => {
+        console.error(":( Errore parsing GLTF:", error);
+      }
     );
+  } catch (error) {
+    console.error(":( Errore di rete Mii:", error);
+  }
 }
 const rawMiiData = "0800400308040402020c0301050500010a0000000006000803000a01003c4004000214031303080d04000a030109";
 loadMiiHead(rawMiiData);
+
 
 
 
