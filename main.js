@@ -71,50 +71,47 @@ scene.add( floor );
 const gltfLoader = new GLTFLoader();
 
 async function loadDynamicMii(miiDataHex) {
+  const targetUrl = `https://mii-unsecure.ariankordi.net/mii.glb?data=${encodeURIComponent(miiDataHex)}`;
+  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
 
-  const miiUrl = `https://mii-unsecure.ariankordi.net/mii.glb?data=${encodeURIComponent(miiDataHex)}&type=face`;
+  try {
+    const response = await fetch(proxyUrl);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const arrayBuffer = await response.arrayBuffer();
 
-  gltfLoader.load(
-    miiUrl,
-    (gltf) => {
-      const miiHead = gltf.scene;
+    gltfLoader.parse(
+      arrayBuffer,
+      '',
+      (gltf) => {
+        const miiHead = gltf.scene;
+        miiHead.scale.set(0.5, 0.5, 0.5);
+        miiHead.position.set(0, 0.8, 0);
 
-      
-      miiHead.scale.set(0.5, 0.5, 0.5);
-      
+        miiHead.traverse((child) => {
+          if (child.isMesh && child.material) {
+            const oldMat = child.material;
+            child.material = new THREE.MeshBasicMaterial({
+              map: oldMat.map || null,
+              color: oldMat.color || 0xffffff,
+              transparent: oldMat.transparent || false,
+              alphaTest: oldMat.alphaTest || 0
+            });
+          }
+        });
 
-      miiHead.position.set(0, 0.5, 0); 
-
-
-      miiHead.traverse((child) => {
-        if (child.isMesh && child.material) {
-          const oldMat = child.material;
-          child.material = new THREE.MeshBasicMaterial({
-            map: oldMat.map || null,
-            color: oldMat.color || 0xffffff,
-            transparent: oldMat.transparent || false,
-            alphaTest: oldMat.alphaTest || 0
-          });
-        }
-      });
-
-      // Aggiunge la testa direttamente come figlio dell'oggetto player
-      player.add(miiHead);
-    },
-    (xhr) => {
-      console.log(`Caricamento Mii: ${(xhr.loaded / xhr.total) * 100}%`);
-    },
-    (err) => {
-      console.error("Errore nel caricamento del modello 3D Mii:", err);
-    }
-  );
+        player.add(miiHead);
+      },
+      (error) => {
+        console.error('Parsing error:', error);
+      }
+    );
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
 }
 
 const userMiiHex = "0800400308040402020c0301050500010a0000000006000803000a01003c4004000214031303080d04000a030109";
 loadDynamicMii(userMiiHex);
-
-
-
 
 
 
