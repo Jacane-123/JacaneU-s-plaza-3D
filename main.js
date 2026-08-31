@@ -72,38 +72,34 @@ const gltfLoader = new GLTFLoader();
 
 async function loadDynamicMii(miiDataHex) {
   const miiTargetUrl = `https://mii-unsecure.ariankordi.net/mii.glb?data=${encodeURIComponent(miiDataHex)}`;
-  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(miiTargetUrl)}`;
+
   try {
-    const response = await fetch(proxyUrl);
-    if (!response.ok) throw new Error("Impossibile contattare il proxy");
+    const response = await fetch(miiTargetUrl);
+    if (!response.ok) throw new Error("Failed to fetch Mii GLB");
 
-    const data = await response.json();
-    
-    
-    const blobResponse = await fetch(data.contents);
-    const blob = await blobResponse.blob();
-    const blobUrl = URL.createObjectURL(blob);
+    const arrayBuffer = await response.arrayBuffer();
 
-    gltfLoader.load(
-      blobUrl,
+    gltfLoader.parse(
+      arrayBuffer,
+      '',
       (gltf) => {
         const miiHead = gltf.scene;
         miiHead.scale.set(0.8, 0.8, 0.8);
-        miiHead.position.set(0, 1.1, 0); 
+        miiHead.position.set(0, 1.1, 0);
         miiHead.rotation.y = Math.PI;
 
         player.add(miiHead);
-        URL.revokeObjectURL(blobUrl); // Libera la memoria
       },
-      undefined,
-      (err) => console.error(":( Errore nel caricamento del modello 3D:", err)
+      (err) => console.error("Error parsing 3D model:", err)
     );
   } catch (err) {
-    console.error(":( Errore durante il recupero del Mii:", err);
+    console.error("Error fetching Mii:", err);
   }
 }
+
 const userMiiHex = "0800400308040402020c0301050500010a0000000006000803000a01003c4004000214031303080d04000a030109";
 loadDynamicMii(userMiiHex);
+
 
 
 
