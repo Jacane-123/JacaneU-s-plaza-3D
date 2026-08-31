@@ -69,14 +69,21 @@ scene.add( floor );
 
 // Mii renderer (Using ariankordi's mii renderer)
 const gltfLoader = new GLTFLoader();
-async function loadMiiHead(miiDataHex) {
-  const miiUrl = `https://mii-unsecure.ariankordi.net/mii.glb?data=${encodeURIComponent(miiDataHex)}`;
+
+async function loadDynamicMii(miiDataHex) {
+  const miiTargetUrl = `https://mii-unsecure.ariankordi.net/mii.glb?data=${encodeURIComponent(miiDataHex)}`;
+  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(miiTargetUrl)}`;
   try {
-    const response = await fetch(miiUrl);
-    if (!response.ok) throw new Error("Error during Mii loading");
-    const arrayBuffer = await response.arrayBuffer();
-    const blob = new Blob([arrayBuffer], { type: 'model/gltf-binary' });
+    const response = await fetch(proxyUrl);
+    if (!response.ok) throw new Error("Impossibile contattare il proxy");
+
+    const data = await response.json();
+    
+    
+    const blobResponse = await fetch(data.contents);
+    const blob = await blobResponse.blob();
     const blobUrl = URL.createObjectURL(blob);
+
     gltfLoader.load(
       blobUrl,
       (gltf) => {
@@ -84,20 +91,19 @@ async function loadMiiHead(miiDataHex) {
         miiHead.scale.set(0.8, 0.8, 0.8);
         miiHead.position.set(0, 1.1, 0); 
         miiHead.rotation.y = Math.PI;
+
         player.add(miiHead);
-        URL.revokeObjectURL(blobUrl);
+        URL.revokeObjectURL(blobUrl); // Libera la memoria
       },
       undefined,
-      (error) => {
-        console.error(":( Errore parsing GLTF:", error);
-      }
+      (err) => console.error(":( Errore nel caricamento del modello 3D:", err)
     );
-  } catch (error) {
-    console.error(":( Errore di rete Mii:", error);
+  } catch (err) {
+    console.error(":( Errore durante il recupero del Mii:", err);
   }
 }
-const rawMiiData = "0800400308040402020c0301050500010a0000000006000803000a01003c4004000214031303080d04000a030109";
-loadMiiHead(rawMiiData);
+const userMiiHex = "0800400308040402020c0301050500010a0000000006000803000a01003c4004000214031303080d04000a030109";
+loadDynamicMii(userMiiHex);
 
 
 
