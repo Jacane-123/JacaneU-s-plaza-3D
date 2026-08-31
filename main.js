@@ -1,0 +1,284 @@
+import * as THREE from 'three';
+import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+
+  // made by Jacopo Bava (aka JacaneU), following https://threejs.org/manual and more
+
+//Ambient
+// color
+const ambientColor = new THREE.Color( '#e4e9ed' );
+
+// sky
+scene.background = new THREE.Color( ambientColor );
+
+// fog
+scene.fog = new THREE.FogExp2( ambientColor, 0.05 );
+
+// dust particlees
+const dustParticles = [];
+const dustGeometry = new THREE.SphereGeometry( 0.05, 16, 16 );
+const dustMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff, transparent: true, opacity: 0} );
+for ( let i = 0; i < 20; i++ ) {
+  const dust = new THREE.Mesh(  dustGeometry, dustMaterial.clone() );
+  dust.position.x = Math.random() * 40 - 20;
+  dust.position.y = Math.random() * 7 + 1;
+  dust.position.z = Math.random() * 40 - 20;
+  dust.userData = { state: 'fadingIn', visibleDuration: Math.random() * 3 + 2, timer: 0 };
+  scene.add( dust );
+  dustParticles.push( dust );
+}
+
+
+
+//Objects
+// minigame box placeholder
+const minigameboxGeometry = new THREE.BoxGeometry( 0.5, 0.5, 0.15 );
+const minigameboxTexture = new THREE.TextureLoader().load( 'public/textures/MinigameBoxes/BoxGlassBase.png' );
+const minigameiconTexture = new THREE.TextureLoader().load( 'public/textures/MinigameBoxes/GameIcon.png' );
+const minigameboxMaterial = new THREE.MeshBasicMaterial( { 
+  map: minigameboxTexture,
+  transparent: true } );
+const minigamebox = new THREE.Mesh( minigameboxGeometry, minigameboxMaterial );
+minigamebox.position.set(0, 1, 1);
+scene.add( minigamebox );
+
+// player  placeholder
+const playerGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+const playerMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+const player = new THREE.Mesh( playerGeometry, playerMaterial );
+player.position.set(0, 1, 0);
+scene.add( player );
+
+// floor
+const floorGeometry = new THREE.PlaneGeometry( 50, 50 );
+const floorTexture = new THREE.TextureLoader().load( 'public/textures/FloorTexture.png' );
+floorTexture.wrapS = THREE.RepeatWrapping;
+floorTexture.wrapT = THREE.RepeatWrapping;
+floorTexture.repeat.set( 10, 56 );
+const floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture } );
+const floor = new THREE.Mesh( floorGeometry, floorMaterial );
+floor.rotation.x = -Math.PI / 2;
+scene.add( floor );
+
+// Mii renderer (made with ariankordi's mii renderer)
+const gltfLoader = new GLTFLoader();
+function loadMiiHead(miiDataHex) {
+  const callbackName = 'onMiiData_' + Math.floor(Math.random() * 1000000);
+  window[callbackName] = function(data) {
+    document.head.removeChild(script);
+    delete window[callbackName];
+    let base64String = data.content;
+    if (base64String.includes(',')) {
+      base64String = base64String.split(',')[1];
+    }
+    base64String = base64String.replace(/\s/g, '');
+    try {
+      const binaryString = atob(base64String);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes.buffer], { type: 'model/gltf-binary' });
+      const blobUrl = URL.createObjectURL(blob);
+      gltfLoader.load(
+        blobUrl,
+        (gltf) => {
+          const miiHead = gltf.scene;
+          miiHead.scale.set(0.8, 0.8, 0.8);
+          miiHead.position.set(0, 1.1, 0); 
+          miiHead.rotation.y = Math.PI;
+          player.add(miiHead);
+          URL.revokeObjectURL(blobUrl);
+        },
+        undefined,
+        (error) => {
+          console.error(":( Error parsing GLTF:", error);
+        }
+      );
+    } catch (err) {
+      console.error(":( error while decoding Base64:", err);
+    }
+  };
+  const targetUrl = `https://mii-unsecure.ariankordi.net/mii.glb?data=${encodeURIComponent(miiDataHex)}`;
+  const jsonpUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}&callback=${callbackName}`;
+  const script = document.createElement('script');
+  script.src = jsonpUrl;
+  script.onerror = () => {
+    console.error(":( Error loading Mii script");
+  };
+  document.head.appendChild(script);
+}
+const rawMiiData = "0800400308040402020c0301050500010a0000000006000803000a01003c4004000214031303080d04000a030109";
+loadMiiHead(rawMiiData);
+
+
+
+//Controls 
+// camera
+const cameraPivot = new THREE.Object3D();
+scene.add( cameraPivot );
+
+let cameraDistance = 5;
+camera.position.set( 0, 0, cameraDistance );
+cameraPivot.add( camera );
+const controls = new PointerLockControls( cameraPivot, renderer.domElement );
+document.body.addEventListener( 'click', () => {
+  controls.lock();
+} );
+document.addEventListener( 'wheel', ( event ) => {
+  if ( controls.isLocked ) {
+    cameraDistance += event.deltaY * 0.005;
+    cameraDistance = Math.max( 0, Math.min( 15, cameraDistance ) );
+    camera.position.z = cameraDistance;
+  }
+} );
+
+//movement + jump + gravity + run
+let isWPressed = false;
+let isAPressed = false;
+let isSPressed = false;
+let isDPressed = false;
+let isSpacePressed = false;
+let isShiftPressed = false;
+
+const cameraDirection = new THREE.Vector3();
+
+document.addEventListener( 'keydown', ( event ) => {
+  if ( event.code === 'KeyW' ) isWPressed = true;
+  if ( event.code === 'KeyA' ) isAPressed = true;
+  if ( event.code === 'KeyS' ) isSPressed = true;
+  if ( event.code === 'KeyD' ) isDPressed = true;
+  if ( event.code === 'Space' ) isSpacePressed = true;
+  if ( event.code === 'ShiftLeft' )
+    isShiftPressed = true;
+} );
+
+document.addEventListener( 'keyup', ( event ) => {
+  if ( event.code === 'KeyW' ) isWPressed = false;
+  if ( event.code === 'KeyA' ) isAPressed = false;
+  if ( event.code === 'KeyS' ) isSPressed = false;
+  if ( event.code === 'KeyD' ) isDPressed = false;
+  if ( event.code === 'Space' ) isSpacePressed = false;
+  if ( event.code === 'ShiftLeft' )
+    isShiftPressed = false;
+} );
+
+let playerVelocityY = 0;
+const gravity = 0.015;
+const jumpForce = 0.25;
+const raycaster = new THREE.Raycaster();
+const downDirection = new THREE.Vector3( 0, -1, 0 );
+
+
+
+//function animate
+function animate( time ) {
+  //run
+  let movementSpeed = 0.085;
+  if( isShiftPressed ) movementSpeed = 0.135;
+  
+  // movement
+  let moveX = 0;
+  let moveZ = 0;
+  if ( isWPressed ) moveZ += 1;
+  if ( isSPressed ) moveZ -= 1;
+  if ( isAPressed ) moveX += 1;
+  if ( isDPressed ) moveX -= 1;
+  if ( moveX !== 0 || moveZ !== 0 ) {
+    camera.getWorldDirection( cameraDirection );
+    const cameraAngle = Math.atan2( cameraDirection.x, cameraDirection.z );
+    const inputAngle = Math.atan2( moveX, moveZ );
+    player.rotation.y = cameraAngle + inputAngle + Math.PI;
+    player.translateZ( -movementSpeed );
+  }
+  
+  // gravity
+  player.position.y += playerVelocityY;
+  let isOnGround = false;
+  raycaster.set( player.position, downDirection );
+  const intersects = raycaster.intersectObject( floor  /* aggiungi qui altre puattaforme in futuro*/ );
+  if ( intersects.length > 0 ) {
+    const distanceToGround = intersects[0].distance;
+    if ( distanceToGround <= 0.51 ) {
+      isOnGround = true;
+    }
+  }
+  if ( !isOnGround ) 
+  {
+    playerVelocityY -= gravity;
+  }
+  else if ( isOnGround )
+  {
+    playerVelocityY = 0;
+    player.position.y = 0.5;
+  }
+  
+  // jump
+  if ( isSpacePressed && isOnGround )
+  {
+    playerVelocityY = + jumpForce;
+  }
+  
+  // camera
+  cameraPivot.position.copy( player.position );
+
+  // dust
+  const delta = 0.016; 
+  for ( let i = 0; i < dustParticles.length; i++ ) 
+  {
+    const dust = dustParticles [ i ];
+    const data = dust.userData;
+    dust.position.y += 0.005;
+    if ( data.state === 'fadingIn' ) {
+      dust.material.opacity += delta * 2;
+      if ( dust.material.opacity >= 1 ) {
+        dust.material.opacity = 1;
+        data.state = 'visible';
+        data.timer = 0;
+      }
+    } 
+    else if ( data.state === 'visible' ) {
+      data.timer += delta;
+      if ( data.timer >= data.visibleDuration ) {
+        data.state = 'fadingOut';
+      }
+    } 
+    else if ( data.state === 'fadingOut' ) {
+      dust.material.opacity -= delta * 2;
+      if ( dust.material.opacity <= 0 ) {
+        dust.material.opacity = 0;
+        dust.position.x = Math.random() * 40 - 20;
+        dust.position.y = Math.random() * 7 + 1;
+        dust.position.z = Math.random() * 40 - 20;
+        data.visibleDuration = Math.random() * 3 + 2; 
+        data.state = 'fadingIn';
+      }
+    }
+  } 
+
+  renderer.render( scene, camera );
+}
+renderer.setAnimationLoop( animate );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
