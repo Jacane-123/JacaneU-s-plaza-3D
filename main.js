@@ -1,5 +1,8 @@
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+import { FFL, CharModel } from './MiiRenderer/ffl.js';
+import FFLShaderMaterial from './MiiRenderer/materials/FFLShaderMaterial.js';
+import ResourceLoadHelper from './MiiRenderer/helpers/ResourceLoadHelper.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -67,7 +70,56 @@ floor.rotation.x = -Math.PI / 2;
 scene.add( floor );
 
 //mii renderer
+let fflInstance = null;
+let currentMiiMesh = null;
 
+const base64ToBytes = (base64) => Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+const hexToBytes = (hex) => Uint8Array.from({ length: hex.length >>> 1 }, (_, i) => Number.parseInt(hex.slice(i << 1, (i << 1) + 2), 16));
+
+function parseHexOrBase64ToBytes(text) {
+  text = text.replace(/\s+/g, '');
+  return /^[0-9a-fA-F]+$/.test(text) ? hexToBytes(text) : base64ToBytes(text);
+}
+
+async function initMiiEngine() {
+  const ModuleFFL = globalThis.ModuleFFL;
+  const resourcePath = document.querySelector('meta[itemprop="ffl-js-resource-fetch-path"]')?.getAttribute('content');
+  const resourceBuffer = await ResourceLoadHelper.loadResource(resourcePath);
+  fflInstance = new FFL(ModuleFFL, resourceBuffer);
+}
+
+function updateMiiModel(dataString) {
+  if (!fflInstance) return;
+
+  if (currentMiiMesh) {
+    player.remove(currentMiiMesh);
+  }
+
+  const bytesData = parseHexOrBase64ToBytes(dataString);
+  const charModel = new CharModel(fflInstance, bytesData, 0, FFLShaderMaterial);
+  charModel.initTextures(renderer, FFLShaderMaterial);
+
+  currentMiiMesh = charModel.meshes;
+  currentMiiMesh.position.set(0, 0.5, 0);
+  currentMiiMesh.rotation.y = Math.PI;
+
+  player.add(currentMiiMesh);
+}
+
+initMiiEngine().then(() => {
+  const charDataInput = document.getElementById('charData');
+  if (charDataInput && charDataInput.value) {
+    updateMiiModel(charDataInput.value);
+  }
+
+  const form = document.getElementById('charForm');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      updateMiiModel(charDataInput.value);
+    });
+  }
+});
 
 
 //Controls 
