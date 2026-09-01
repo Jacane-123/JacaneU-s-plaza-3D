@@ -21,7 +21,7 @@ main developers
 - Jacopo Bava (aka JacaneU) author
 
 resources and helpers
-- (threeJS)[https://threejs.org/] (library used for 3D)
-- (threeJS manual)[https://threejs.org/manual/] (& documentation)[https://threejs.org/docs/] (to learn how to use threeJS)
-- (FFLjs)[https://github.com/ariankordi/FFL.js/](for rendering miis)
+- [threeJS](https://threejs.org/) (library used for 3D)
+- [threeJS manual](https://threejs.org/manual/) [& documentation](https://threejs.org/docs/) (to learn how to use threeJS)
+- [FFLjs](https://github.com/ariankordi/FFL.js/) (for rendering miis)
 - Ariankordi (helped by showing me various resources)
