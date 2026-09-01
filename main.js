@@ -76,7 +76,7 @@ scene.add( floor );
 	renderer.setSize(300, 300);
 	document.body.append(renderer.domElement);
 	// NOTE: You need to get AFLResHigh_2_3.dat from somewhere.
-	const ffl = await FFL.initWithResource(fetch('https://ariankordi.github.io/FFL.js/AFLResHigh_2_3.dat'),
+	const ffl = await FFL.initWithResource(fetch('FFLResMiddle.dat'),
 		// If not using a CDN like esm.sh, then pass just "ModuleFFL" to CharModel directly.
 		ModuleFFL({locateFile: () => 'https://esm.sh/gh/ariankordi/FFL.js@v2.2.0/ffl-emscripten.wasm'}));
 	/** Mii data from NNID: JasmineChlora */
