@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>JacaneU | 3D Plaza</title>
-    
+    <meta itemprop="ffl-js-resource-fetch-path" content="asset_model_character_mii_AFLResHigh_2_3_dat.zip">
+	  
     <style>
       body { margin: 0; }
     </style>
@@ -16,6 +17,16 @@
       }
     }
     </script>
+	<script src="./ffl-emscripten-single-file.cjs"></script>
+    <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+        "fflate": "https://esm.sh/fflate@0.8.2"
+      }
+    }
+	</script>
   </head>
   
   <!-- made by Jacopo Bava -->
