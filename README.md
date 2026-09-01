@@ -11,7 +11,17 @@
 ## what is it?
 This is a virtual plaza on the web, where you can hang out with your friends and meet other people! <br> 
 Use your Mii character to walk around, chat with other visitors of the plaza and play minigames! <br>
-<small>(mini games are not a confirmed feature, I could cancel it in any moment)</small>
+<sub>(minigames are not a confirmed feature, I could cancel it in any moment)</sub>
 
 ## my personal website
 This is part of the project for [my personal website](https://jacaneu.neocities.org/)
+
+## credits
+main developers
+- Jacopo Bava (aka JacaneU) author
+
+resources and helpers
+- (threeJS)[https://threejs.org/] (library used for 3D)
+- (threeJS manual)[https://threejs.org/manual/] (& documentation)[https://threejs.org/docs/] (to learn how to use threeJS)
+- (FFLjs)[https://github.com/ariankordi/FFL.js/](for rendering miis)
+- Ariankordi (helped by showing me various resources)
