@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
-import { FFL, CharModel } from 'FFL.js';
+import { FFL, CharModel, FFLCharModelDescDefault, ModelIcon } from 'FFL.js';
 import FFLShaderMaterial from 'FFL.js/materials/FFLShaderMaterial.js';
 import ModuleFFL from 'FFL.js/ffl-emscripten.cjs';
 
@@ -70,57 +70,25 @@ floor.rotation.x = -Math.PI / 2;
 scene.add( floor );
 
 //mii renderer
-let fflInstance = null;
-let currentMiiMesh = null;
+// The example below renders a simple icon.
+(async function () {
+	const renderer = new THREE.WebGLRenderer({ alpha: true });
+	renderer.setSize(300, 300);
+	document.body.append(renderer.domElement);
+	// NOTE: You need to get AFLResHigh_2_3.dat from somewhere.
+	const ffl = await FFL.initWithResource(fetch('../AFLResHigh_2_3.dat'),
+		// If not using a CDN like esm.sh, then pass just "ModuleFFL" to CharModel directly.
+		ModuleFFL({locateFile: () => 'https://esm.sh/gh/ariankordi/FFL.js@v2.2.0/ffl-emscripten.wasm'}));
+	/** Mii data from NNID: JasmineChlora */
+	const data = Uint8Array.fromHex('000d142a303f434b717a7b84939ba6b2bbbec5cbc9d0e2ea010d15252b3250535960736f726870757f8289a0a7aeb1');
+	const model = new CharModel(ffl, data, FFLCharModelDescDefault,
+	FFLShaderMaterial, renderer);
+	const scene = new THREE.Scene();
+	scene.add(model.meshes);
+	renderer.render(scene, /* camera */ ModelIcon.getCamera());
+		})();
 
-const base64ToBytes = (base64) => Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-const hexToBytes = (hex) => Uint8Array.from({ length: hex.length >>> 1 }, (_, i) => Number.parseInt(hex.slice(i << 1, (i << 1) + 2), 16));
 
-function parseHexOrBase64ToBytes(text) {
-  text = text.replace(/\s+/g, '');
-  return /^[0-9a-fA-F]+$/.test(text) ? hexToBytes(text) : base64ToBytes(text);
-}
-
-async function initMiiEngine() {
-  const resourcePath = document.querySelector('meta[itemprop="ffl-js-resource-fetch-path"]')?.getAttribute('content') || './asset_model_character_mii_AFLResHigh_2_3_dat.zip';
-  
-  fflInstance = await FFL.initWithResource(
-    fetch(resourcePath),
-    ModuleFFL({ locateFile: () => 'https://esm.sh/gh/ariankordi/FFL.js@v2.2.0/ffl-emscripten.wasm' })
-  );
-}
-
-function updateMiiModel(dataString) {
-  if (!fflInstance) return;
-
-  if (currentMiiMesh) {
-    player.remove(currentMiiMesh);
-  }
-
-  const bytesData = parseHexOrBase64ToBytes(dataString);
-  const charModel = new CharModel(fflInstance, bytesData, 0, FFLShaderMaterial, renderer);
-
-  currentMiiMesh = charModel.meshes;
-  currentMiiMesh.position.set(0, 0.5, 0);
-  currentMiiMesh.rotation.y = Math.PI;
-
-  player.add(currentMiiMesh);
-}
-
-initMiiEngine().then(() => {
-  const charDataInput = document.getElementById('charData');
-  if (charDataInput && charDataInput.value) {
-    updateMiiModel(charDataInput.value);
-  }
-
-  const form = document.getElementById('charForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      updateMiiModel(charDataInput.value);
-    });
-  }
-}).catch(err => console.error("Errore inizializzazione FFL:", err));
 
 //Controls 
 // camera
