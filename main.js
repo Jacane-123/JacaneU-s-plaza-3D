@@ -66,6 +66,55 @@ const floor = new THREE.Mesh( floorGeometry, floorMaterial );
 floor.rotation.x = -Math.PI / 2;
 scene.add( floor );
 
+//mii renderer
+const gltfLoader = new GLTFLoader();
+
+function attachMiiToPlayer(gltfScene) {
+  if (player.miiHead) {
+    player.remove(player.miiHead);
+    player.miiHead.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.geometry.dispose();
+        if (child.material.map) child.material.map.dispose();
+        child.material.dispose();
+      }
+    });
+  }
+
+  player.miiHead = gltfScene;
+  player.miiHead.scale.set(0.8, 0.8, 0.8);
+  player.miiHead.position.set(0, 1.2, 0);
+  player.miiHead.rotation.y = Math.PI;
+
+  player.add(player.miiHead);
+}
+
+async function loadDynamicMii(miiDataHex) {
+  const miiTargetUrl = `https://mii-unsecure.ariankordi.net/mii.glb?data=${encodeURIComponent(miiDataHex)}`;
+
+  try {
+    const response = await fetch(miiTargetUrl);
+    if (!response.ok) throw new Error("Failed to fetch Mii GLB");
+
+    const arrayBuffer = await response.arrayBuffer();
+
+    gltfLoader.parse(
+      arrayBuffer,
+      '',
+      (gltf) => {
+        attachMiiToPlayer(gltf.scene);
+      },
+      (err) => console.error("Error parsing 3D model:", err)
+    );
+  } catch (err) {
+    console.error("Error fetching Mii:", err);
+  }
+}
+
+const userMiiHex = "0800400308040402020c0301050500010a0000000006000803000a01003c4004000214031303080d04000a030109";
+loadDynamicMii(userMiiHex);
+
+
 
 //Controls 
 // camera
