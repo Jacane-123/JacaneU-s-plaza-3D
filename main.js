@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
-import { FFL, CharModel } from './MiiRenderer/ffl.js';
-import FFLShaderMaterial from './MiiRenderer/materials/FFLShaderMaterial.js';
-import ResourceLoadHelper from './MiiRenderer/helpers/ResourceLoadHelper.js';
+import { FFL, CharModel } from 'FFL.js';
+import FFLShaderMaterial from 'FFL.js/materials/FFLShaderMaterial.js';
+import ModuleFFL from 'FFL.js/ffl-emscripten.cjs';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -82,10 +82,12 @@ function parseHexOrBase64ToBytes(text) {
 }
 
 async function initMiiEngine() {
-  const ModuleFFL = globalThis.ModuleFFL;
-  const resourcePath = document.querySelector('meta[itemprop="ffl-js-resource-fetch-path"]')?.getAttribute('content');
-  const resourceBuffer = await ResourceLoadHelper.loadResource(resourcePath);
-  fflInstance = new FFL(ModuleFFL, resourceBuffer);
+  const resourcePath = document.querySelector('meta[itemprop="ffl-js-resource-fetch-path"]')?.getAttribute('content') || './asset_model_character_mii_AFLResHigh_2_3_dat.zip';
+  
+  fflInstance = await FFL.initWithResource(
+    fetch(resourcePath),
+    ModuleFFL({ locateFile: () => 'https://esm.sh/gh/ariankordi/FFL.js@v2.2.0/ffl-emscripten.wasm' })
+  );
 }
 
 function updateMiiModel(dataString) {
@@ -96,8 +98,7 @@ function updateMiiModel(dataString) {
   }
 
   const bytesData = parseHexOrBase64ToBytes(dataString);
-  const charModel = new CharModel(fflInstance, bytesData, 0, FFLShaderMaterial);
-  charModel.initTextures(renderer, FFLShaderMaterial);
+  const charModel = new CharModel(fflInstance, bytesData, 0, FFLShaderMaterial, renderer);
 
   currentMiiMesh = charModel.meshes;
   currentMiiMesh.position.set(0, 0.5, 0);
@@ -119,8 +120,7 @@ initMiiEngine().then(() => {
       updateMiiModel(charDataInput.value);
     });
   }
-});
-
+}).catch(err => console.error("Errore inizializzazione FFL:", err));
 
 //Controls 
 // camera
