@@ -91,7 +91,7 @@ scene.add( floor );
 	const miiMesh = model.meshes;
 	miiMesh.position.set(0, 0.5, 0);
 	miiMesh.rotation.y = Math.PI;
-	miiMesh.scale.set(0.5, 0.5, 0.5);
+	miiMesh.scale.set(0.01, 0.01, 0.02);
 
 	player.add(miiMesh);
 })();
