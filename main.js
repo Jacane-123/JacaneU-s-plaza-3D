@@ -70,39 +70,56 @@ floor.rotation.x = -Math.PI / 2;
 scene.add( floor );
 
 //mii renderer
-let currentCharModel = null;
+// The example below renders a simple icon.
+(async function () {
+	const response = await fetch('FFLResMiddle.dat');
+	const arrayBuffer = await response.arrayBuffer();
+	// NOTE: You need to get AFLResHigh_2_3.dat from somewhere.
+	const ffl = await FFL.initWithResource(
+		new Response(arrayBuffer),
+		// If not using a CDN like esm.sh, then pass just "ModuleFFL" to CharModel directly.
+		ModuleFFL({
+			locateFile: () => 'https://esm.sh/gh/ariankordi/FFL.js@v2.2.0/ffl-emscripten.wasm',
+			INITIAL_MEMORY: 67108864
+		})
+	);
 
-function updateMii() {
-  const inputElement = document.getElementById('charDataInput');
-  if (!inputElement || !inputElement.value) return;
+	let miiMesh = null;
 
-  const hexString = inputElement.value;
-  const data = parseHexOrBase64ToBytes(hexString);
+	function updateMii() {
+		const inputElement = document.getElementById('charDataInput');
+		const hexString = (inputElement && inputElement.value.trim() !== '') 
+			? inputElement.value.trim() 
+			: '000d142a303f434b717a7b84939ba6b2bbbec5cbc9d0e2ea010d15252b3250535960736f726870757f8289a0a7aeb1';
 
-  if (currentCharModel) {
-    player.remove(currentCharModel.meshes);
-  }
+		/** Mii data from NNID: JasmineChlora */
+		let data;
+		if (typeof Uint8Array.fromHex === 'function') {
+			data = Uint8Array.fromHex(hexString);
+		} else {
+			data = Uint8Array.from(hexString.match(/.{1,2}/g)?.map(byte => parseInt(byte, 16)) || []);
+		}
 
-  currentCharModel = new CharModel(
-    ffl,
-    data,
-    FFLCharModelDescDefault,
-    FFLShaderMaterial,
-    renderer
-  );
+		if (miiMesh) {
+			player.remove(miiMesh);
+		}
 
-  const miiMesh = currentCharModel.meshes;
-  miiMesh.position.set(0, 0.5, 0);
-  miiMesh.rotation.y = Math.PI;
-  miiMesh.scale.set(0.02, 0.02, 0.02);
+		const model = new CharModel(ffl, data, FFLCharModelDescDefault,
+		FFLShaderMaterial, renderer);
+		miiMesh = model.meshes;
+		miiMesh.position.set(0, 0.5, 0);
+		miiMesh.rotation.y = Math.PI;
+		miiMesh.scale.set(0.02, 0.02, 0.02);
 
-  player.add(miiMesh);
-}
+		player.add(miiMesh);
+	}
+	updateMii();
+	const updateButton = document.getElementById('updateMiiButton');
+	if (updateButton) {
+		updateButton.addEventListener('click', updateMii);
+	}
+})();
 
-const updateButton = document.getElementById('updateMiiButton');
-if (updateButton) {
-  updateButton.addEventListener('click', updateMii);
-}
 
 
 
