@@ -70,45 +70,39 @@ floor.rotation.x = -Math.PI / 2;
 scene.add( floor );
 
 //mii renderer
-// The example below renders a simple icon.
-(async function () {
-	const response = await fetch('FFLResMiddle.dat');
-	const arrayBuffer = await response.arrayBuffer();
-	// NOTE: You need to get AFLResHigh_2_3.dat from somewhere.
-	const ffl = await FFL.initWithResource(
-		new Response(arrayBuffer),
-		// If not using a CDN like esm.sh, then pass just "ModuleFFL" to CharModel directly.
-		ModuleFFL({
-			locateFile: () => 'https://esm.sh/gh/ariankordi/FFL.js@v2.2.0/ffl-emscripten.wasm',
-			INITIAL_MEMORY: 67108864
-		})
-	);
+let currentCharModel = null;
 
-	/** Mii data from NNID: JasmineChlora */
-	//const data = Uint8Array.fromHex('000d142a303f434b717a7b84939ba6b2bbbec5cbc9d0e2ea010d15252b3250535960736f726870757f8289a0a7aeb1');
-	const charFormElement = /** @type {HTMLFormElement} */ (requireElementById('charForm'));
-	const charDataInputElement = /** @type {HTMLInputElement} */ (requireElementById('charData'));
+function updateMii() {
+  const inputElement = document.getElementById('charDataInput');
+  if (!inputElement || !inputElement.value) return;
 
-	// -------------- Form Submission Handler ------------------
-	charFormElement.addEventListener('submit', (event) => {
-		event.preventDefault();
+  const hexString = inputElement.value;
+  const data = parseHexOrBase64ToBytes(hexString);
 
-		// Read input from the form.
-		if (!charDataInputElement || !charDataInputElement.value) {
-			throw new Error('You need to input something into the CharModel form input.');
-		}
+  if (currentCharModel) {
+    player.remove(currentCharModel.meshes);
+  }
 
-		initAndUpdateScene(charDataInputElement.value);
-	});
-	const model = new CharModel(ffl, data, FFLCharModelDescDefault,
-	FFLShaderMaterial, renderer);
-	const miiMesh = model.meshes;
-	miiMesh.position.set(0, 0.5, 0);
-	miiMesh.rotation.y = Math.PI;
-	miiMesh.scale.set(0.02, 0.02, 0.02);
+  currentCharModel = new CharModel(
+    ffl,
+    data,
+    FFLCharModelDescDefault,
+    FFLShaderMaterial,
+    renderer
+  );
 
-	player.add(miiMesh);
-})();
+  const miiMesh = currentCharModel.meshes;
+  miiMesh.position.set(0, 0.5, 0);
+  miiMesh.rotation.y = Math.PI;
+  miiMesh.scale.set(0.02, 0.02, 0.02);
+
+  player.add(miiMesh);
+}
+
+const updateButton = document.getElementById('updateMiiButton');
+if (updateButton) {
+  updateButton.addEventListener('click', updateMii);
+}
 
 
 
