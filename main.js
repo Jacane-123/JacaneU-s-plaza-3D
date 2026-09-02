@@ -22,10 +22,11 @@ window.addEventListener('keydown', (event) => {
   }
 });
 let menu = false;
-function ToggleMenu() {
-	menu = !menu;
-	console.log(menu)
-}
+
+window.ToggleMenu = function() {
+  menu = !menu;
+  console.log(menu);
+};
 
 //Ambient
 // color
