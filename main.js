@@ -85,10 +85,11 @@ scene.add( floor );
 	);
 
 	/** Mii data from NNID: JasmineChlora */
-	const data = Uint8Array.fromHex('AAAAAAkAAAAAAAAAAAAAAAAAAABlAAAARAAAgAAAAAAhAAAASQAAgAcAAAADAAAABAAAAAIAAAAQAAAAEgAAAEEAAIAIAAAAAwAAAAMAAAAMAAAABAAAAAAAAAAAAAAACwAAABcAAAATAACAAAAAAAMAAAANAAAAAAAAAAAAAAAIAACABAAAAAoAAAAEAAAARAAAgAYAAAAMAAAAAAAAAAQAAAACAAAAFAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-	const model = new CharModel(ffl, data, FFLCharModelDescDefault, FFLShaderMaterial, renderer);
+	const data = Uint8Array.fromHex('000d142a303f434b717a7b84939ba6b2bbbec5cbc9d0e2ea010d15252b3250535960736f726870757f8289a0a7aeb1');
+	const model = new CharModel(ffl, data, FFLCharModelDescDefault,
+	FFLShaderMaterial, renderer);
 	const miiMesh = model.meshes;
-	miiMesh.position.set(0, 1, 0);
+	miiMesh.position.set(0, 0.5, 0);
 	miiMesh.rotation.y = Math.PI;
 	miiMesh.scale.set(0.02, 0.02, 0.02);
 
@@ -244,3 +245,9 @@ function animate( time ) {
   renderer.render( scene, camera );
 }
 renderer.setAnimationLoop( animate );
+
+
+
+
+
+
