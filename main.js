@@ -86,6 +86,15 @@ scene.add( floor );
 
 	let miiMesh = null;
 
+	function parseInputToBytes(text) {
+		text = text.replace(/\s+/g, '');
+		const isHex = /^[0-9a-fA-F]+$/.test(text) && text.length % 2 === 0;
+		if (isHex) {
+			return Uint8Array.from(text.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+		}
+		return Uint8Array.from(atob(text), c => c.charCodeAt(0));
+		}
+
 	function updateMii() {
 		const inputElement = document.getElementById('charDataInput');
 		const hexString = (inputElement && inputElement.value.trim() !== '') 
@@ -116,7 +125,10 @@ scene.add( floor );
 	updateMii();
 	const updateButton = document.getElementById('updateMiiButton');
 	if (updateButton) {
-		updateButton.addEventListener('click', updateMii);
+		updateButton.addEventListener('click', (e) => {
+			e.preventDefault();
+			updateMii();
+		});
 	}
 })();
 
