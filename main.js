@@ -70,22 +70,17 @@ floor.rotation.x = -Math.PI / 2;
 scene.add( floor );
 
 //mii renderer
-// The example below renders a simple icon.
 (async function () {
 	const response = await fetch('FFLResMiddle.dat');
 	const arrayBuffer = await response.arrayBuffer();
-	// NOTE: You need to get AFLResHigh_2_3.dat from somewhere.
 	const ffl = await FFL.initWithResource(
 		new Response(arrayBuffer),
-		// If not using a CDN like esm.sh, then pass just "ModuleFFL" to CharModel directly.
 		ModuleFFL({
 			locateFile: () => 'https://esm.sh/gh/ariankordi/FFL.js@v2.2.0/ffl-emscripten.wasm',
 			INITIAL_MEMORY: 67108864
 		})
 	);
-
 	let miiMesh = null;
-
 	function parseInputToBytes(text) {
 		text = text.replace(/\s+/g, '');
 		const isHex = /^[0-9a-fA-F]+$/.test(text) && text.length % 2 === 0;
@@ -94,31 +89,23 @@ scene.add( floor );
 		}
 		return Uint8Array.from(atob(text), c => c.charCodeAt(0));
 	}
-
 	function updateMii() {
 		const inputElement = document.getElementById('charDataInput');
 		const rawText = (inputElement && inputElement.value.trim() !== '') 
 			? inputElement.value.trim() 
 			: 'AAAAAAkAAAAAAAAAAAAAAAAAAABlAAAARAAAgAAAAAAhAAAASQAAgAcAAAADAAAABAAAAAIAAAAQAAAAEgAAAEEAAIAIAAAAAwAAAAMAAAAMAAAABAAAAAAAAAAAAAAACwAAABcAAAATAACAAAAAAAMAAAANAAAAAAAAAAAAAAAIAACABAAAAAoAAAAEAAAARAAAgAYAAAAMAAAAAAAAAAQAAAACAAAAFAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
-
-		/** Mii data conversion */
 		const data = parseInputToBytes(rawText);
-
 		if (miiMesh) {
 			player.remove(miiMesh);
 		}
-
 		const model = new CharModel(ffl, data, FFLCharModelDescDefault, FFLShaderMaterial, renderer);
 		miiMesh = model.meshes;
 		miiMesh.position.set(0, 0.5, 0);
 		miiMesh.rotation.y = Math.PI;
 		miiMesh.scale.set(0.02, 0.02, 0.02);
-
 		player.add(miiMesh);
 	}
-
 	updateMii();
-
 	const updateButton = document.getElementById('updateMiiButton');
 	if (updateButton) {
 		updateButton.addEventListener('click', (e) => {
