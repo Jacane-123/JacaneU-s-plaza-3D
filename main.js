@@ -85,15 +85,39 @@ scene.add( floor );
 	);
 
 	/** Mii data from NNID: JasmineChlora */
-	const data = Uint8Array.fromHex(document.getElementById("charData"););
-	const model = new CharModel(ffl, data, FFLCharModelDescDefault,
-	FFLShaderMaterial, renderer);
+	function updateMii(rawText) {
+	  try {
+		const data = parseHexOrBase64ToBytes(rawText);
+		  if (currentCharModel) {
+			player.remove(currentCharModel.meshes);
+			currentCharModel = CharModel.update(
+				currentCharModel,
+				data,
+				renderer,
+				FFLCharModelDescDefault
+				);
+		} else {
+			currentCharModel = new CharModel(ffl, data, FFLCharModelDescDefault, FFLShaderMaterial, renderer);
+		}
+	const model = new CharModel(ffl, data, FFLCharModelDescDefault, FFLShaderMaterial, renderer);
 	const miiMesh = model.meshes;
 	miiMesh.position.set(0, 0.5, 0);
 	miiMesh.rotation.y = Math.PI;
 	miiMesh.scale.set(0.02, 0.02, 0.02);
 
 	player.add(miiMesh);
+
+	const inputElement = document.getElementById('charData');
+	if (inputElement && inputElement.value) {
+		updateMii(inputElement.value);
+	}
+	const formElement = document.getElementById('charForm');
+	if (formElement) {
+		formElement.addEventListener('submit', (e) => {
+			e.preventDefault();
+			updateMii(inputElement.value);
+		});
+	}
 })();
 
 
