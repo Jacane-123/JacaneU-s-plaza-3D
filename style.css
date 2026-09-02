@@ -28,6 +28,8 @@ button {
 }
 
 .menu {
+  padding:5px;
+  margin: 2px;
   border-radius: 10px;
   background: 
     linear-gradient(
