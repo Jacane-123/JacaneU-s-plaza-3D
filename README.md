@@ -3,7 +3,7 @@
 **STILL IN EARLY STAGES OF DEVELOPMENT**
 - ✓ 3D plaza scene with threeJS 
 - ✓ player movement + camera controls + basic physics 
-- Mii rendering from raw hex data 
+- Mii rendering from raw hex/base64 data 
 - multiplayer
 - chat with chattable iframe shared with my personal website
 - mini games (0) 
