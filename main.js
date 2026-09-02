@@ -85,7 +85,21 @@ scene.add( floor );
 	);
 
 	/** Mii data from NNID: JasmineChlora */
-	const data = Uint8Array.fromHex('000d142a303f434b717a7b84939ba6b2bbbec5cbc9d0e2ea010d15252b3250535960736f726870757f8289a0a7aeb1');
+	//const data = Uint8Array.fromHex('000d142a303f434b717a7b84939ba6b2bbbec5cbc9d0e2ea010d15252b3250535960736f726870757f8289a0a7aeb1');
+	const charFormElement = /** @type {HTMLFormElement} */ (requireElementById('charForm'));
+	const charDataInputElement = /** @type {HTMLInputElement} */ (requireElementById('charData'));
+
+	// -------------- Form Submission Handler ------------------
+	charFormElement.addEventListener('submit', (event) => {
+		event.preventDefault();
+
+		// Read input from the form.
+		if (!charDataInputElement || !charDataInputElement.value) {
+			throw new Error('You need to input something into the CharModel form input.');
+		}
+
+		initAndUpdateScene(charDataInputElement.value);
+	});
 	const model = new CharModel(ffl, data, FFLCharModelDescDefault,
 	FFLShaderMaterial, renderer);
 	const miiMesh = model.meshes;
