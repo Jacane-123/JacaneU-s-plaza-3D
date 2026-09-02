@@ -72,21 +72,29 @@ scene.add( floor );
 //mii renderer
 // The example below renders a simple icon.
 (async function () {
-	const renderer = new THREE.WebGLRenderer({ alpha: true });
-	renderer.setSize(300, 300);
-	document.body.append(renderer.domElement);
+	const response = await fetch('FFLResMiddle.dat');
+	const arrayBuffer = await response.arrayBuffer();
 	// NOTE: You need to get AFLResHigh_2_3.dat from somewhere.
-	const ffl = await FFL.initWithResource(fetch('FFLResMiddle.dat'),
+	const ffl = await FFL.initWithResource(
+		new Response(arrayBuffer),
 		// If not using a CDN like esm.sh, then pass just "ModuleFFL" to CharModel directly.
-		ModuleFFL({locateFile: () => 'https://esm.sh/gh/ariankordi/FFL.js@v2.2.0/ffl-emscripten.wasm'}));
+		ModuleFFL({
+			locateFile: () => 'https://esm.sh/gh/ariankordi/FFL.js@v2.2.0/ffl-emscripten.wasm',
+			INITIAL_MEMORY: 67108864
+		})
+	);
+
 	/** Mii data from NNID: JasmineChlora */
 	const data = Uint8Array.fromHex('000d142a303f434b717a7b84939ba6b2bbbec5cbc9d0e2ea010d15252b3250535960736f726870757f8289a0a7aeb1');
 	const model = new CharModel(ffl, data, FFLCharModelDescDefault,
 	FFLShaderMaterial, renderer);
-	const scene = new THREE.Scene();
-	scene.add(model.meshes);
-	renderer.render(scene, /* camera */ ModelIcon.getCamera());
-		})();
+	const miiMesh = model.meshes;
+	miiMesh.position.set(0, 0.5, 0);
+	miiMesh.rotation.y = Math.PI;
+
+	player.add(miiMesh);
+})();
+
 
 
 
