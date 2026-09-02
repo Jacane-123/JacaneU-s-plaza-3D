@@ -21,11 +21,17 @@ window.addEventListener('keydown', (event) => {
     ToggleMenu();
   }
 });
-let menu = false;
-
+let menuVisible = false;
+const menu = document.getElementById('menu');
 window.ToggleMenu = function() {
-  menu = !menu;
+  menuVisible = !menuVisible;
   console.log(menu);
+
+  if (menuVisible) {
+    menu.classList.remove('hidden');
+  } else {
+    menu.classList.add('hidden');
+  }
 };
 
 //Ambient
