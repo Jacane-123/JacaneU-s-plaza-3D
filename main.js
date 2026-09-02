@@ -25,13 +25,13 @@ let menuVisible = false;
 const menu = document.getElementById('menu');
 window.ToggleMenu = function() {
   menuVisible = !menuVisible;
-  console.log(menu);
+  console.log("menu visible?" + menu);
 
   document.getElementById("menu");
   if (menuVisible.style.display === "none") {
-    menuVisible.style.display = "block";
+    menu.style.display = "block";
   } else {
-    menuVisible.style.display = "none";
+    menu.style.display = "none";
   }
 };
 //Ambient
