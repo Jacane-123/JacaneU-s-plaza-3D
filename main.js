@@ -25,10 +25,8 @@ let menuVisible = false;
 const menu = document.getElementById('menu');
 window.ToggleMenu = function() {
   menuVisible = !menuVisible;
-  console.log("menu visible?" + menu);
-
-  document.getElementById("menu");
-  if (menuVisible.style.display === "none") {
+  console.log("menu visible?" + menuVisible);
+  if (menuVisible) {
     menu.style.display = "block";
   } else {
     menu.style.display = "none";
