@@ -86,7 +86,6 @@ scene.add( floor );
 
 	let miiMesh = null;
 
-	// Funzione per convertire sia dati Hex che Base64
 	function parseInputToBytes(text) {
 		text = text.replace(/\s+/g, '');
 		const isHex = /^[0-9a-fA-F]+$/.test(text) && text.length % 2 === 0;
@@ -129,33 +128,7 @@ scene.add( floor );
 	}
 })();
 
-
-		if (miiMesh) {
-			player.remove(miiMesh);
-		}
-
-		const model = new CharModel(ffl, data, FFLCharModelDescDefault,
-		FFLShaderMaterial, renderer);
-		miiMesh = model.meshes;
-		miiMesh.position.set(0, 0.5, 0);
-		miiMesh.rotation.y = Math.PI;
-		miiMesh.scale.set(0.02, 0.02, 0.02);
-
-		player.add(miiMesh);
-	}
-	updateMii();
-	const updateButton = document.getElementById('updateMiiButton');
-	if (updateButton) {
-		updateButton.addEventListener('click', (e) => {
-			e.preventDefault();
-			updateMii();
-		});
-	}
-})();
-
-
-
-
+		
 
 //Controls 
 // camera
