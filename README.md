@@ -8,7 +8,7 @@
 - chat with chattable iframe shared with my personal website
 - mini games (0) 
   
-## what is it?
+## about the project
 This is a virtual plaza on the web, where you can hang out with your friends and meet other people! <br> 
 Use your Mii character to walk around, chat with other visitors of the plaza and play minigames! <br>
 <sub>(minigames are not a confirmed feature, I could cancel it in any moment)</sub>
@@ -17,11 +17,15 @@ Use your Mii character to walk around, chat with other visitors of the plaza and
 This is part of the project for [my personal website](https://jacaneu.neocities.org/)
 
 ## credits
-main developers
+**main developers**
 - Jacopo Bava (aka JacaneU) author
+<br>
 
-resources and helpers
+**main resources**
 - [threeJS](https://threejs.org/) (library used for 3D)
 - [threeJS manual](https://threejs.org/manual/) [& documentation](https://threejs.org/docs/) (to learn how to use threeJS)
 - [FFLjs](https://github.com/ariankordi/FFL.js/) (for rendering miis)
-- Ariankordi (helped by showing me various resources)
+<br>
+
+**special thanks to**
+- Ariankordi, for making [FFLjs](https://github.com/ariankordi/FFL.js/) and for helping me by answering my questions and giving me useful advices!
