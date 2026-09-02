@@ -85,7 +85,7 @@ scene.add( floor );
 	);
 
 	/** Mii data from NNID: JasmineChlora */
-	const data = Uint8Array.fromHex('000d142a303f434b717a7b84939ba6b2bbbec5cbc9d0e2ea010d15252b3250535960736f726870757f8289a0a7aeb1');
+	const data = Uint8Array.fromHex('document.getElementById("charData");');
 	const model = new CharModel(ffl, data, FFLCharModelDescDefault,
 	FFLShaderMaterial, renderer);
 	const miiMesh = model.meshes;
