@@ -86,6 +86,7 @@ scene.add( floor );
 
 	let miiMesh = null;
 
+	// Funzione per convertire sia dati Hex che Base64
 	function parseInputToBytes(text) {
 		text = text.replace(/\s+/g, '');
 		const isHex = /^[0-9a-fA-F]+$/.test(text) && text.length % 2 === 0;
@@ -93,21 +94,41 @@ scene.add( floor );
 			return Uint8Array.from(text.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
 		}
 		return Uint8Array.from(atob(text), c => c.charCodeAt(0));
-		}
+	}
 
 	function updateMii() {
 		const inputElement = document.getElementById('charDataInput');
-		const hexString = (inputElement && inputElement.value.trim() !== '') 
+		const rawText = (inputElement && inputElement.value.trim() !== '') 
 			? inputElement.value.trim() 
-			: '000d142a303f434b717a7b84939ba6b2bbbec5cbc9d0e2ea010d15252b3250535960736f726870757f8289a0a7aeb1';
+			: 'AAAAAAkAAAAAAAAAAAAAAAAAAABlAAAARAAAgAAAAAAhAAAASQAAgAcAAAADAAAABAAAAAIAAAAQAAAAEgAAAEEAAIAIAAAAAwAAAAMAAAAMAAAABAAAAAAAAAAAAAAACwAAABcAAAATAACAAAAAAAMAAAANAAAAAAAAAAAAAAAIAACABAAAAAoAAAAEAAAARAAAgAYAAAAMAAAAAAAAAAQAAAACAAAAFAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
 
-		/** Mii data from NNID: JasmineChlora */
-		let data;
-		if (typeof Uint8Array.fromHex === 'function') {
-			data = Uint8Array.fromHex(hexString);
-		} else {
-			data = Uint8Array.from(hexString.match(/.{1,2}/g)?.map(byte => parseInt(byte, 16)) || []);
+		/** Mii data conversion */
+		const data = parseInputToBytes(rawText);
+
+		if (miiMesh) {
+			player.remove(miiMesh);
 		}
+
+		const model = new CharModel(ffl, data, FFLCharModelDescDefault, FFLShaderMaterial, renderer);
+		miiMesh = model.meshes;
+		miiMesh.position.set(0, 0.5, 0);
+		miiMesh.rotation.y = Math.PI;
+		miiMesh.scale.set(0.02, 0.02, 0.02);
+
+		player.add(miiMesh);
+	}
+
+	updateMii();
+
+	const updateButton = document.getElementById('updateMiiButton');
+	if (updateButton) {
+		updateButton.addEventListener('click', (e) => {
+			e.preventDefault();
+			updateMii();
+		});
+	}
+})();
+
 
 		if (miiMesh) {
 			player.remove(miiMesh);
