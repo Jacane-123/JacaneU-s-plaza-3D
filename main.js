@@ -86,10 +86,9 @@ scene.add( floor );
 
 	/** Mii data from NNID: JasmineChlora */
 	const data = Uint8Array.fromHex('AAAAAAkAAAAAAAAAAAAAAAAAAABlAAAARAAAgAAAAAAhAAAASQAAgAcAAAADAAAABAAAAAIAAAAQAAAAEgAAAEEAAIAIAAAAAwAAAAMAAAAMAAAABAAAAAAAAAAAAAAACwAAABcAAAATAACAAAAAAAMAAAANAAAAAAAAAAAAAAAIAACABAAAAAoAAAAEAAAARAAAgAYAAAAMAAAAAAAAAAQAAAACAAAAFAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-	const model = new CharModel(ffl, data, FFLCharModelDescDefault,
-	FFLShaderMaterial, renderer);
+	const model = new CharModel(ffl, data, FFLCharModelDescDefault, FFLShaderMaterial, renderer);
 	const miiMesh = model.meshes;
-	miiMesh.position.set(0, 0.5, 0);
+	miiMesh.position.set(0, 1, 0);
 	miiMesh.rotation.y = Math.PI;
 	miiMesh.scale.set(0.02, 0.02, 0.02);
 
@@ -211,45 +210,6 @@ function animate( time ) {
   // dust
   const delta = 0.016; 
   for ( let i = 0; i < dustParticles.length; i++ ) 
-  {
-    const dust = dustParticles [ i ];
-    const data = dust.userData;
-    dust.position.y += 0.005;
-    if ( data.state === 'fadingIn' ) {
-      dust.material.opacity += delta * 2;
-      if ( dust.material.opacity >= 1 ) {
-        dust.material.opacity = 1;
-        data.state = 'visible';
-        data.timer = 0;
-      }
-    } 
-    else if ( data.state === 'visible' ) {
-      data.timer += delta;
-      if ( data.timer >= data.visibleDuration ) {
-        data.state = 'fadingOut';
-      }
-    } 
-    else if ( data.state === 'fadingOut' ) {
-      dust.material.opacity -= delta * 2;
-      if ( dust.material.opacity <= 0 ) {
-        dust.material.opacity = 0;
-        dust.position.x = Math.random() * 40 - 20;
-        dust.position.y = Math.random() * 7 + 1;
-        dust.position.z = Math.random() * 40 - 20;
-        data.visibleDuration = Math.random() * 3 + 2; 
-        data.state = 'fadingIn';
-      }
-    }
-  } 
-
-  renderer.render( scene, camera );
-}
-renderer.setAnimationLoop( animate );
-
-
-
-
-      for ( let i = 0; i < dustParticles.length; i++ ) 
   {
     const dust = dustParticles [ i ];
     const data = dust.userData;
