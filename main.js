@@ -13,6 +13,20 @@ document.body.appendChild( renderer.domElement );
 
   // made by Jacopo Bava (aka JacaneU), following https://threejs.org/manual and more
 
+//UI
+// menu toggle
+let isEscPressed = false;
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    ToggleMenu();
+  }
+});
+let menu = false;
+ToggleMenu() {
+	menu = !menu;
+	console.log(menu)
+}
+
 //Ambient
 // color
 const ambientColor = new THREE.Color( '#e4e9ed' );
