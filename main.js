@@ -27,13 +27,13 @@ window.ToggleMenu = function() {
   menuVisible = !menuVisible;
   console.log(menu);
 
-  if (menuVisible) {
-    menu.classList.remove('hidden');
+  document.getElementById("menu");
+  if (menuVisible.style.display === "none") {
+    menuVisible.style.display = "block";
   } else {
-    menu.classList.add('hidden');
+    menuVisible.style.display = "none";
   }
 };
-
 //Ambient
 // color
 const ambientColor = new THREE.Color( '#e4e9ed' );
