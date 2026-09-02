@@ -22,7 +22,7 @@ window.addEventListener('keydown', (event) => {
   }
 });
 let menu = false;
-ToggleMenu() {
+function ToggleMenu() {
 	menu = !menu;
 	console.log(menu)
 }
