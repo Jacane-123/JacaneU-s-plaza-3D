@@ -33,82 +33,6 @@ window.ToggleMenu = function() {
   }
 };
 
-// username
-function makeLabelCanvas( baseWidth, size, name ) {
-  const borderSize = 2;
-  const ctx = document.createElement( 'canvas' ).getContext( '2d' );
-  const font = `${size}px bold sans-serif`;
-  ctx.font = font;
-
-  const textWidth = ctx.measureText( name ).width;
-
-  const doubleBorderSize = borderSize * 2;
-  const width = baseWidth + doubleBorderSize;
-  const height = size + doubleBorderSize;
-  ctx.canvas.width = width;
-  ctx.canvas.height = height;
-
-  ctx.font = font;
-  ctx.textBaseline = 'middle';
-  ctx.textAlign = 'center';
-
-  ctx.fillStyle = 'blue';
-  ctx.fillRect( 0, 0, width, height );
-
-  const scaleFactor = Math.min( 1, baseWidth / textWidth );
-  ctx.translate( width / 2, height / 2 );
-  ctx.scale( scaleFactor, 1 );
-  ctx.fillStyle = 'white';
-  ctx.fillText( name, 0, 0 );
-
-  return ctx.canvas;
-}
-
-let username = null;
-
-function updateUsername() {
-  const usernameInputElement = document.getElementById( 'usernameInput' );
-  const usernameText = ( usernameInputElement && usernameInputElement.value.trim() !== '' ) 
-    ? usernameInputElement.value.trim() 
-    : 'Guest';
-
-  if ( username ) {
-    player.remove( username );
-    if ( username.material.map ) username.material.map.dispose();
-    username.material.dispose();
-  }
-
-  const canvas = makeLabelCanvas( 150, 32, usernameText );
-  const texture = new THREE.CanvasTexture( canvas );
-  texture.minFilter = THREE.LinearFilter;
-  texture.wrapS = THREE.ClampToEdgeWrapping;
-  texture.wrapT = THREE.ClampToEdgeWrapping;
-
-  const labelMaterial = new THREE.SpriteMaterial( {
-    map: texture,
-    transparent: true,
-  } );
-
-  const labelBaseScale = 0.01;
-  username = new THREE.Sprite( labelMaterial );
-  username.scale.x = canvas.width * labelBaseScale;
-  username.scale.y = canvas.height * labelBaseScale;
-  username.position.set( 0, 1.2, 0 );
-
-  player.add( username );
-}
-
-updateUsername();
-
-const usernameUpdateButton = document.getElementById( 'updateUsername' );
-if ( usernameUpdateButton ) {
-  usernameUpdateButton.addEventListener( 'click', ( e ) => {
-    e.preventDefault();
-    updateUsername();
-  } );
-}
-
-
 
 
 //Ambient
@@ -213,6 +137,80 @@ scene.add( floor );
 	}
 })();
 
+// username
+function makeLabelCanvas( baseWidth, size, name ) {
+  const borderSize = 2;
+  const ctx = document.createElement( 'canvas' ).getContext( '2d' );
+  const font = `${size}px bold sans-serif`;
+  ctx.font = font;
+
+  const textWidth = ctx.measureText( name ).width;
+
+  const doubleBorderSize = borderSize * 2;
+  const width = baseWidth + doubleBorderSize;
+  const height = size + doubleBorderSize;
+  ctx.canvas.width = width;
+  ctx.canvas.height = height;
+
+  ctx.font = font;
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center';
+
+  ctx.fillStyle = 'blue';
+  ctx.fillRect( 0, 0, width, height );
+
+  const scaleFactor = Math.min( 1, baseWidth / textWidth );
+  ctx.translate( width / 2, height / 2 );
+  ctx.scale( scaleFactor, 1 );
+  ctx.fillStyle = 'white';
+  ctx.fillText( name, 0, 0 );
+
+  return ctx.canvas;
+}
+
+let username = null;
+
+function updateUsername() {
+  const usernameInputElement = document.getElementById( 'usernameInput' );
+  const usernameText = ( usernameInputElement && usernameInputElement.value.trim() !== '' ) 
+    ? usernameInputElement.value.trim() 
+    : 'Guest';
+
+  if ( username ) {
+    player.remove( username );
+    if ( username.material.map ) username.material.map.dispose();
+    username.material.dispose();
+  }
+
+  const canvas = makeLabelCanvas( 150, 32, usernameText );
+  const texture = new THREE.CanvasTexture( canvas );
+  texture.minFilter = THREE.LinearFilter;
+  texture.wrapS = THREE.ClampToEdgeWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+
+  const labelMaterial = new THREE.SpriteMaterial( {
+    map: texture,
+    transparent: true,
+  } );
+
+  const labelBaseScale = 0.01;
+  username = new THREE.Sprite( labelMaterial );
+  username.scale.x = canvas.width * labelBaseScale;
+  username.scale.y = canvas.height * labelBaseScale;
+  username.position.set( 0, 1.2, 0 );
+
+  player.add( username );
+}
+
+updateUsername();
+
+const usernameUpdateButton = document.getElementById( 'updateUsername' );
+if ( usernameUpdateButton ) {
+  usernameUpdateButton.addEventListener( 'click', ( e ) => {
+    e.preventDefault();
+    updateUsername();
+  } );
+}
 		
 
 //Controls 
