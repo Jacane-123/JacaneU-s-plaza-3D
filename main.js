@@ -141,30 +141,24 @@ scene.add( floor );
 function makeLabelCanvas( baseWidth, size, name ) {
   const borderSize = 2;
   const ctx = document.createElement( 'canvas' ).getContext( '2d' );
-  const font = `${size}px bold sans-serif`;
+  const fontFamily = 'NintendoU';
+  const font = `${size}px bold ${fontFamily}`;
   ctx.font = font;
-
   const textWidth = ctx.measureText( name ).width;
-
   const doubleBorderSize = borderSize * 2;
   const width = baseWidth + doubleBorderSize;
   const height = size + doubleBorderSize;
   ctx.canvas.width = width;
   ctx.canvas.height = height;
-
   ctx.font = font;
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'center';
-
-  ctx.fillStyle = 'blue';
-  ctx.fillRect( 0, 0, width, height );
-
+  ctx.clearRect( 0, 0, width, height );
   const scaleFactor = Math.min( 1, baseWidth / textWidth );
   ctx.translate( width / 2, height / 2 );
   ctx.scale( scaleFactor, 1 );
-  ctx.fillStyle = 'white';
+  ctx.fillStyle = '#333333';
   ctx.fillText( name, 0, 0 );
-
   return ctx.canvas;
 }
 
@@ -197,7 +191,7 @@ function updateUsername() {
   username = new THREE.Sprite( labelMaterial );
   username.scale.x = canvas.width * labelBaseScale;
   username.scale.y = canvas.height * labelBaseScale;
-  username.position.set( 0, 1.2, 0 );
+  username.position.set( 0, 2, 0 );
 
   player.add( username );
 }
