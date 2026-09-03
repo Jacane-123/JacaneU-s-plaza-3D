@@ -32,6 +32,73 @@ window.ToggleMenu = function() {
     menu.style.display = "none";
   }
 };
+
+// username
+	let username = null;
+
+function createUsernameSprite(name) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = 512;
+  canvas.height = 128;
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+  context.beginPath();
+  context.roundRect(10, 10, canvas.width - 20, canvas.height - 20, 20);
+  context.fill();
+
+  context.font = 'Bold 48px Arial';
+  context.fillStyle = '#ffffff';
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText(name, canvas.width / 2, canvas.height / 2);
+	
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.minFilter = THREE.LinearFilter;
+  texture.wrapS = THREE.ClampToEdgeWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+	
+  const spriteMaterial = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    depthTest: false
+  });
+
+  const sprite = new THREE.Sprite(spriteMaterial);
+  
+  sprite.scale.set(2, 0.5, 1); 
+
+  return sprite;
+	
+}
+
+
+	function updateUsername() {
+		const usernameInputElement = document.getElementById('usernameInput');
+		const  = (usernameInputElement && usernameInputElement.value.trim() !== '') 
+			? usernameInputElement.value.trim() 
+			: 'Guest';
+		if (username) {
+			player.remove(username);
+		}
+		username.position.set(0, 0.5, 0);
+		username.rotation.y = Math.PI;
+		username.scale.set(1, 1, 1);
+		player.add(username);
+	}
+	updateUsername();
+	const UsernameUpdateButton = document.getElementById('updateUsername');
+	if (usernameUpdateButton) {
+		usernameUpdateButton.addEventListener('click', (e) => {
+			e.preventDefault();
+			updateUsername();
+		});
+	}
+})();
+
+
+
 //Ambient
 // color
 const ambientColor = new THREE.Color( '#e4e9ed' );
