@@ -24,14 +24,24 @@
   
   <body>
     <script type="module" src="main.js"></script>
+	  
 	<button id="menuButton" onclick="ToggleMenu()">Menu</button>
 	<div id="menu">
 	  <form id="charForm">
-	    <label for="charData">Enter FFLStoreData or Studio Data:</label>
+	    <label for="charDataInput">Enter FFLStoreData or Studio Data:</label>
 	    <!-- Value: soyun -->
 	    <input type="text" id="charDataInput" value="AAAAAAkAAAAAAAAAAAAAAAAAAABlAAAARAAAgAAAAAAhAAAASQAAgAcAAAADAAAABAAAAAIAAAAQAAAAEgAAAEEAAIAIAAAAAwAAAAMAAAAMAAAABAAAAAAAAAAAAAAACwAAABcAAAATAACAAAAAAAMAAAANAAAAAAAAAAAAAAAIAACABAAAAAoAAAAEAAAARAAAgAYAAAAMAAAAAAAAAAQAAAACAAAAFAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" placeholder="Base64 or Hex">
 	    <br>
 	    <button type="button" id="updateMiiButton">Create CharModel</button>
+		<br>
+	  </form>
+
+	  <form id="usernameForm">
+	    <label for="usernameInput">Enter Username:</label>
+	    <input type="text" id="usernameInput" value="Guest" placeholder="Username">
+	    <br>
+	    <button type="button" id="updateUsername">Change Username</button>
+		<br>
 	  </form>
 	</div>
   </body>
