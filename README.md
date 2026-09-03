@@ -11,7 +11,7 @@
 <br>
 
 **bonus stuff**
-- menu
+- ✓ menu (will probably change)
 - title screen
 - original soundtrack
 <br>
