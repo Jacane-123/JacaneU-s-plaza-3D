@@ -17,9 +17,10 @@ document.body.appendChild( renderer.domElement );
 // menu toggle
 let isEscPressed = false;
 window.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    ToggleMenu();
-  }
+  if (event.key === 'Escape') isEscPressed = true;
+});
+window.addEventListener('keyup', (event) => {
+  if (event.key === 'Escape') isEscPressed = false;
 });
 let menuVisible = false;
 const menu = document.getElementById('menu');
@@ -268,6 +269,14 @@ const downDirection = new THREE.Vector3( 0, -1, 0 );
 
 //function animate
 function animate( time ) {
+  //menu
+  if ( menuVisible ) {
+	  controls.isLocked = false;
+  }
+  if ( isEscPressed ) {
+	  ToggleMenu();
+  }
+	
   //run
   let movementSpeed = 0.085;
   if( isShiftPressed ) movementSpeed = 0.135;
