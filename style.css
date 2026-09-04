@@ -46,7 +46,8 @@ button:active {
   height: fit-content;
   padding: 7px;
   margin: 7px;
-  gap: 10px;
+  gap: 20px;
+  flex-directon: column;
   border-radius: 10px;
   background: 
     linear-gradient(
