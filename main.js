@@ -315,8 +315,8 @@ function animate( time ) {
   }
   
   // camera
-  cameraPivot.position = player.position;
-  cameraPivot.position.y = player.position.y +1;
+  cameraPivot.position.copy( player.position );
+  cameraPivot.position.y += 1;
 
   // dust
   const delta = 0.016; 
