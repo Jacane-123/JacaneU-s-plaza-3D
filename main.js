@@ -29,7 +29,7 @@ window.ToggleMenu = function() {
   menuVisible = !menuVisible;
   console.log("menu visible?" + menuVisible);
   if (menuVisible) {
-    menu.style.display = "block";
+    menu.style.display = "flex";
   } else {
     menu.style.display = "none";
   }
