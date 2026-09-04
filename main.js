@@ -310,6 +310,11 @@ function animate( time ) {
     playerVelocityY = 0;
     player.position.y = 0.5;
   }
+  if ( player.position.y = -2 ) {
+	player.position.y = 1;
+	player.position.x = 0;
+	player.position.z = 0;
+  }
   
   // jump
   if ( isSpacePressed && isOnGround )
