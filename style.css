@@ -46,6 +46,7 @@ button:active {
   height: fit-content;
   padding: 7px;
   margin: 7px;
+  gap: 10px;
   border-radius: 10px;
   background: 
     linear-gradient(
