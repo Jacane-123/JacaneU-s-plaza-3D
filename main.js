@@ -282,7 +282,7 @@ function animate( time ) {
   if ( isSPressed ) moveZ -= 1;
   if ( isAPressed ) moveX += 1;
   if ( isDPressed ) moveX -= 1;
-  if ( moveX !== 0 || moveZ !== 0 && !menuVisible ) {
+  if ( ( moveX !== 0 || moveZ !== 0 ) && !menuVisible ) {
     camera.getWorldDirection( cameraDirection );
     const cameraAngle = Math.atan2( cameraDirection.x, cameraDirection.z );
     const inputAngle = Math.atan2( moveX, moveZ );
@@ -310,7 +310,7 @@ function animate( time ) {
     playerVelocityY = 0;
     player.position.y = 0.5;
   }
-  if ( player.position.y = -2 ) {
+  if ( player.position.y <= -2 ) {
 	player.position.y = 1;
 	player.position.x = 0;
 	player.position.z = 0;
