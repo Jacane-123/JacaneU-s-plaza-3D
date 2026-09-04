@@ -317,7 +317,13 @@ function animate( time ) {
   // camera
   cameraPivot.position.copy( player.position );
   cameraPivot.position.y += 1;
-
+  if ( cameraDistance < 0.5 ) {
+	  player.visible = false;
+  }
+  else {
+	  player.visible = false;
+  }
+	
   // dust
   const delta = 0.016; 
   for ( let i = 0; i < dustParticles.length; i++ ) 
