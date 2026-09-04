@@ -123,9 +123,9 @@ scene.add( floor );
 		}
 		const model = new CharModel(ffl, data, FFLCharModelDescDefault, FFLShaderMaterial, renderer);
 		miiMesh = model.meshes;
-		miiMesh.position.set(0, 0.5, 0);
+		miiMesh.position.set(0, 1, 0);
 		miiMesh.rotation.y = Math.PI;
-		miiMesh.scale.set(0.02, 0.02, 0.02);
+		miiMesh.scale.set(0.015, 0.015, 0.015);
 		player.add(miiMesh);
 	}
 	updateMii();
@@ -192,7 +192,7 @@ function updateUsername() {
   username = new THREE.Sprite( labelMaterial );
   username.scale.x = canvas.width * labelBaseScale;
   username.scale.y = canvas.height * labelBaseScale;
-  username.position.set( 0, 2, 0 );
+  username.position.set( 0, 2.5, 0 );
 
   player.add( username );
 }
