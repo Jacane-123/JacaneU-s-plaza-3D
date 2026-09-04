@@ -26,7 +26,8 @@
     <script type="module" src="main.js"></script>
 	  
 	<button id="menuButton" onclick="ToggleMenu()">Menu</button>
-	<div id="menu">
+	<details id="menu">
+	  <summary>Mii character settings</summary>
 	  <div id="charForm">
 	    <label for="charDataInput">Enter FFLStoreData or Studio Data:</label>
 	    <!-- Value: soyun -->
@@ -34,15 +35,16 @@
 	    <br>
 	    <button type="button" id="updateMiiButton">Create CharModel</button>
 		<br>
-	  </div>
+	  </details>
 
-	  <div id="usernameForm">
+	  <details id="usernameForm">
+	    <summary>Username settings</summary>
 	    <label for="usernameInput">Enter Username:</label>
 	    <input type="text" id="usernameInput" value="Guest" placeholder="Username">
 	    <br>
 	    <button type="button" id="updateUsername">Change Username</button>
 		<br>
-	  </div>
+	  </details>
 	</div>
   </body>
 </html>
