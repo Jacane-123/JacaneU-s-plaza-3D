@@ -315,7 +315,7 @@ function animate( time ) {
   }
   
   // camera
-  cameraPivot.position.copy( player.miiMesh );
+  cameraPivot.position.copy( miiMesh.position );
 
   // dust
   const delta = 0.016; 
