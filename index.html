@@ -27,22 +27,22 @@
 	  
 	<button id="menuButton" onclick="ToggleMenu()">Menu</button>
 	<div id="menu">
-	  <form id="charForm">
+	  <div id="charForm">
 	    <label for="charDataInput">Enter FFLStoreData or Studio Data:</label>
 	    <!-- Value: soyun -->
-	    <input type="text" id="charDataInput" onsubmit="return false; value="AAAAAAkAAAAAAAAAAAAAAAAAAABlAAAARAAAgAAAAAAhAAAASQAAgAcAAAADAAAABAAAAAIAAAAQAAAAEgAAAEEAAIAIAAAAAwAAAAMAAAAMAAAABAAAAAAAAAAAAAAACwAAABcAAAATAACAAAAAAAMAAAANAAAAAAAAAAAAAAAIAACABAAAAAoAAAAEAAAARAAAgAYAAAAMAAAAAAAAAAQAAAACAAAAFAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" placeholder="Base64 or Hex">
+	    <input type="text" id="charDataInput" value="AAAAAAkAAAAAAAAAAAAAAAAAAABlAAAARAAAgAAAAAAhAAAASQAAgAcAAAADAAAABAAAAAIAAAAQAAAAEgAAAEEAAIAIAAAAAwAAAAMAAAAMAAAABAAAAAAAAAAAAAAACwAAABcAAAATAACAAAAAAAMAAAANAAAAAAAAAAAAAAAIAACABAAAAAoAAAAEAAAARAAAgAYAAAAMAAAAAAAAAAQAAAACAAAAFAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" placeholder="Base64 or Hex">
 	    <br>
 	    <button type="button" id="updateMiiButton">Create CharModel</button>
 		<br>
-	  </form>
+	  </div>
 
-	  <form id="usernameForm">
+	  <div id="usernameForm">
 	    <label for="usernameInput">Enter Username:</label>
-	    <input type="text" id="usernameInput" onsubmit="return false; value="Guest" placeholder="Username">
+	    <input type="text" id="usernameInput" value="Guest" placeholder="Username">
 	    <br>
 	    <button type="button" id="updateUsername">Change Username</button>
 		<br>
-	  </form>
+	  </div>
 	</div>
   </body>
 </html>
