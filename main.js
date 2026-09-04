@@ -316,12 +316,12 @@ function animate( time ) {
   
   // camera
   cameraPivot.position.copy( player.position );
-  cameraPivot.position.y += 1;
+  cameraPivot.position.y += 1.5;
   if ( cameraDistance < 0.5 ) {
 	  player.visible = false;
   }
   else {
-	  player.visible = false;
+	  player.visible = true;
   }
 	
   // dust
