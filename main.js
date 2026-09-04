@@ -34,6 +34,7 @@ window.ToggleMenu = function() {
     menu.style.display = "none";
   }
 };
+if ( isEscPressed ) ToggleMenu();
 
 
 
@@ -219,6 +220,7 @@ camera.position.set( 0, 0, cameraDistance );
 cameraPivot.add( camera );
 const controls = new PointerLockControls( cameraPivot, renderer.domElement );
 document.body.addEventListener( 'click', () => {
+  if ( menuVisible ) return;
   controls.lock();
 } );
 document.addEventListener( 'wheel', ( event ) => {
@@ -269,14 +271,6 @@ const downDirection = new THREE.Vector3( 0, -1, 0 );
 
 //function animate
 function animate( time ) {
-  //menu
-  if ( menuVisible ) {
-	  controls.isLocked = false;
-  }
-  if ( isEscPressed ) {
-	  ToggleMenu();
-  }
-	
   //run
   let movementSpeed = 0.085;
   if( isShiftPressed ) movementSpeed = 0.135;
