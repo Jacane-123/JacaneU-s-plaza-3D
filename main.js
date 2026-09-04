@@ -23,7 +23,7 @@ window.addEventListener('keydown', (event) => {
 });
 let menuVisible = false;
 const menu = document.getElementById('menu');
-menu.style.display = "block";
+menu.style.display = "none";
 window.ToggleMenu = function() {
   menuVisible = !menuVisible;
   console.log("menu visible?" + menuVisible);
