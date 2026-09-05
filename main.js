@@ -48,7 +48,7 @@ const ambientColor = new THREE.Color( '#e4e9ed' );
 scene.background = new THREE.Color( ambientColor );
 
 // fog
-// scene.fog = new THREE.FogExp2( ambientColor, 0.05 );
+scene.fog = new THREE.FogExp2( ambientColor, 0.05 );
 
 // dust particlees
 const dustParticles = [];
@@ -82,7 +82,7 @@ scene.add( minigamebox );
 const loader = new OBJLoader();
 const player = await loader.loadAsync( 'public/models/miiBody_F/miiBody_F.obj' );
 player.position.set(0, 1, 0);
-player.scale.set(0.015, 0.015, 0.015);
+player.scale.set(0.0015, 0.0015, 0.0015);
 scene.add( player );
 
 // floor
