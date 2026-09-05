@@ -76,6 +76,6 @@ details {
   gap: 5px;
   padding: 5px;
   border: 1.72px solid rgba(0, 0, 0, 0.5); box-sizing: border-box;
-  background-image: url('public/ScanlineTexture');
+  background-image: url('public/Textures/ScanlineTexture');
   box-shadow: inset 0px 0px 12.91px 0px rgba(0, 0, 0, 0.5);
 }
