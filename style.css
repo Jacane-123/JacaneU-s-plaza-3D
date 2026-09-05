@@ -68,3 +68,14 @@ button:active {
 #menuButton {
   border-radius: 0 0  10px 0;
 }
+
+details {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+  border: 1.72px solid rgba(0, 0, 0, 0.75); box-sizing: border-box;
+  background-image: url('public/ScanlineTexture');
+  box-shadow: inset 0px 0px 12.91px 0px rgba(0, 0, 0, 0.75);
+}
