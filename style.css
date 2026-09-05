@@ -77,5 +77,10 @@ details {
   padding: 5px;
   border: 1.72px solid rgba(0, 0, 0, 0.5); box-sizing: border-box;
   background-image: url('public/Textures/ScanlineTexture.png');
+  background: repeating-linear-gradient(
+    to bottom,
+    #808080 0 10px,
+    #ffffff 10px 20px
+  );
   box-shadow: inset 0px 0px 12.91px 0px rgba(0, 0, 0, 0.5);
 }
