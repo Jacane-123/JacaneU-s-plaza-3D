@@ -46,7 +46,7 @@ button:active {
   height: fit-content;
   padding: 7px;
   margin: 7px;
-  gap: 20px;
+  gap: 10px;
   flex-direction: column;
   border-radius: 10px;
   background: 
@@ -75,12 +75,10 @@ details {
   flex-direction: column;
   gap: 5px;
   padding: 5px;
-  border: 1.72px solid rgba(0, 0, 0, 0.5); box-sizing: border-box;
-  background-image: url('public/Textures/ScanlineTexture.png');
   background: repeating-linear-gradient(
     to bottom,
-    #808080 0 10px,
-    #ffffff 10px 20px
+    #E7E7E7 0 3px,
+    #ffffff 3px 5px
   );
-  box-shadow: inset 0px 0px 12.91px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0px 0px 12.91px 0px rgba(0, 0, 0, 0.25);
 }
