@@ -78,10 +78,11 @@ const minigamebox = new THREE.Mesh( minigameboxGeometry, minigameboxMaterial );
 minigamebox.position.set(0, 1, 1);
 scene.add( minigamebox );
 
-// player  placeholder
+// player
 const loader = new OBJLoader();
 const player = await loader.loadAsync( 'public/models/miiBody_F/miiBody_F.obj' );
 player.position.set(0, 1, 0);
+player.scale.set(0.015, 0.015, 0.015);
 scene.add( player );
 
 // floor
