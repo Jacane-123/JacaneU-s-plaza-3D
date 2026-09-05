@@ -26,29 +26,25 @@
     <script type="module" src="main.js"></script>
 	  
 	<button id="menuButton" onclick="ToggleMenu()">Menu</button>
-	<div id="menu">
-	  <fieldset>
-	    <details id="charForm">
-	      <legend><summary>Mii character settings</summary></legend>
-	      <label for="charDataInput">Enter FFLStoreData or Studio Data:</label>
-	      <!-- Value: soyun -->
-	      <input type="text" id="charDataInput" value="AAAAAAkAAAAAAAAAAAAAAAAAAABlAAAARAAAgAAAAAAhAAAASQAAgAcAAAADAAAABAAAAAIAAAAQAAAAEgAAAEEAAIAIAAAAAwAAAAMAAAAMAAAABAAAAAAAAAAAAAAACwAAABcAAAATAACAAAAAAAMAAAANAAAAAAAAAAAAAAAIAACABAAAAAoAAAAEAAAARAAAgAYAAAAMAAAAAAAAAAQAAAACAAAAFAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" placeholder="Base64 or Hex">
-	      <br>
-	      <button type="button" id="updateMiiButton">Create CharModel</button>
-		  <br>
-	    </details>
-	  </fieldset>
+	<details id="menu">
+	  <summary>Mii character settings</summary>
+	  <div id="charForm">
+	    <label for="charDataInput">Enter FFLStoreData or Studio Data:</label>
+	    <!-- Value: soyun -->
+	    <input type="text" id="charDataInput" value="AAAAAAkAAAAAAAAAAAAAAAAAAABlAAAARAAAgAAAAAAhAAAASQAAgAcAAAADAAAABAAAAAIAAAAQAAAAEgAAAEEAAIAIAAAAAwAAAAMAAAAMAAAABAAAAAAAAAAAAAAACwAAABcAAAATAACAAAAAAAMAAAANAAAAAAAAAAAAAAAIAACABAAAAAoAAAAEAAAARAAAgAYAAAAMAAAAAAAAAAQAAAACAAAAFAAAAAAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" placeholder="Base64 or Hex">
+	    <br>
+	    <button type="button" id="updateMiiButton">Create CharModel</button>
+		<br>
+	  </details>
 
-	<fieldset>
-	    <details id="usernameForm">
-	      <legend><summary>Username settings</summary></legend>
-	      <label for="usernameInput">Enter Username:</label>
-	      <input type="text" id="usernameInput" value="Guest" placeholder="Username">
-	      <br>
-	      <button type="button" id="updateUsername">Change Username</button>
-	  	  <br>
-	    </details>
-	  </fieldset>
+	  <details id="usernameForm">
+	    <summary>Username settings</summary>
+	    <label for="usernameInput">Enter Username:</label>
+	    <input type="text" id="usernameInput" value="Guest" placeholder="Username">
+	    <br>
+	    <button type="button" id="updateUsername">Change Username</button>
+		<br>
+	  </details>
 	</div>
   </body>
 </html>
