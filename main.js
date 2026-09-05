@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
 import { FFL, CharModel, FFLCharModelDescDefault, ModelIcon } from 'FFL.js';
 import FFLShaderMaterial from 'FFL.js/materials/FFLShaderMaterial.js';
 import ModuleFFL from 'FFL.js/ffl-emscripten.cjs';
