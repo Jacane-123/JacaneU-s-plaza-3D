@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { FFL, CharModel, FFLCharModelDescDefault, ModelIcon } from 'FFL.js';
 import FFLShaderMaterial from 'FFL.js/materials/FFLShaderMaterial.js';
 import ModuleFFL from 'FFL.js/ffl-emscripten.cjs';
@@ -77,9 +79,8 @@ minigamebox.position.set(0, 1, 1);
 scene.add( minigamebox );
 
 // player  placeholder
-const playerGeometry = new THREE.BoxGeometry( 1, 1, 1 );
-const playerMaterial = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const player = new THREE.Mesh( playerGeometry, playerMaterial );
+const loader = new OBJLoader();
+const player = await loader.loadAsync( 'public/models/miiBody_F/miiBody_F.obj' );
 player.position.set(0, 1, 0);
 scene.add( player );
 
