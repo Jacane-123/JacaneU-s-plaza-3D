@@ -48,7 +48,7 @@ const ambientColor = new THREE.Color( '#e4e9ed' );
 scene.background = new THREE.Color( ambientColor );
 
 // fog
-scene.fog = new THREE.FogExp2( ambientColor, 0.05 );
+// scene.fog = new THREE.FogExp2( ambientColor, 0.05 );
 
 // dust particlees
 const dustParticles = [];
